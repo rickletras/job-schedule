@@ -17,7 +17,7 @@ public class Job implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private String description;
 	
 	@Temporal(TemporalType.DATE)
