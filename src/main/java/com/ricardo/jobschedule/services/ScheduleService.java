@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ricardo.jobschedule.domain.ScheduleJobs;
 import com.ricardo.jobschedule.repositories.ScheduleRepository;
+import com.ricardo.jobschedule.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ScheduleService {
@@ -16,6 +17,7 @@ public class ScheduleService {
 	
 	public ScheduleJobs find(Integer id) {
 		Optional<ScheduleJobs> schedule = scheduleRepository.findById(id);
-		return schedule.orElse(null);
+		return schedule.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + ScheduleJobs.class.getName()));
 	}
 }

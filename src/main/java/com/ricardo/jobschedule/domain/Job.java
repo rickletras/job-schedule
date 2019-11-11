@@ -1,7 +1,7 @@
 package com.ricardo.jobschedule.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +13,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Job implements Serializable {
@@ -24,13 +25,15 @@ public class Job implements Serializable {
 	private Integer id;
 	private String description;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	@NotNull
-	private Date dateMaxFinish;
+	private Calendar dateMaxFinish;
+	
 	@NotNull
 	private double timeEstipulate;
 	
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "schedule_id")
 	private ScheduleJobs schedule;
@@ -38,7 +41,7 @@ public class Job implements Serializable {
 	public Job() {
 	}
 
-	public Job(Integer id, String description, Date dateMaxFinish, double timeEstipulate, ScheduleJobs schedule) {
+	public Job(Integer id, String description, Calendar dateMaxFinish, double timeEstipulate, ScheduleJobs schedule) {
 		this.id = id;
 		this.description = description;
 		this.dateMaxFinish = dateMaxFinish;
@@ -46,11 +49,11 @@ public class Job implements Serializable {
 		this.schedule = schedule;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -62,11 +65,11 @@ public class Job implements Serializable {
 		this.description = description;
 	}
 
-	public Date getDateMaxFinish() {
+	public Calendar getDateMaxFinish() {
 		return dateMaxFinish;
 	}
 
-	public void setDateMaxFinish(Date dateMaxFinish) {
+	public void setDateMaxFinish(Calendar dateMaxFinish) {
 		this.dateMaxFinish = dateMaxFinish;
 	}
 
