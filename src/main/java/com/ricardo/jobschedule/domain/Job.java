@@ -7,9 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Job implements Serializable {
@@ -25,14 +29,21 @@ public class Job implements Serializable {
 	private Date dateMaxFinish;
 	@NotNull
 	private double timeEstipulate;
+	
+	@JsonBackReference
+	@ManyToOne
+	@JoinColumn(name = "schedule_id")
+	private ScheduleJobs schedule;
 
 	public Job() {
 	}
 
-	public Job(String description, Date dateMaxFinish, double timeEstipulate) {
+	public Job(Integer id, String description, Date dateMaxFinish, double timeEstipulate, ScheduleJobs schedule) {
+		this.id = id;
 		this.description = description;
 		this.dateMaxFinish = dateMaxFinish;
 		this.timeEstipulate = timeEstipulate;
+		this.schedule = schedule;
 	}
 
 	public int getId() {
@@ -66,6 +77,14 @@ public class Job implements Serializable {
 	public void setTimeEstipulate(double timeEstipulate) {
 		this.timeEstipulate = timeEstipulate;
 	}
+	
+	public ScheduleJobs getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(ScheduleJobs schedule) {
+		this.schedule = schedule;
+	}
 
 	@Override
 	public int hashCode() {
@@ -93,7 +112,5 @@ public class Job implements Serializable {
 	public String toString() {
 		return "Job [id=" + id + ", description=" + description + ", dateMaxFinish=" + dateMaxFinish
 				+ ", timeEstipulate=" + timeEstipulate + "]";
-	}
-
-	
+	}	
 }
